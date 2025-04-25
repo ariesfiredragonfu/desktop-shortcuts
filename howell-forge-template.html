@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Enhanced Security Headers -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://unpkg.com https://cdnjs.cloudflare.com; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://unpkg.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self';">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=()">
+    <meta name="referrer" content="strict-origin">
+    
+    <title>Howell Forge Test</title>
+    
+    <!-- Load React from CDN -->
+    <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/17.0.2/umd/react.development.js"></script>
+    <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/17.0.2/umd/react-dom.development.js"></script>
+    <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.18.13/babel.min.js"></script>
+    
+    <style>
+        /* Enhanced loading animation */
+        @keyframes pulse {
+            0% { opacity: 0.6; }
+            50% { opacity: 1; }
+            100% { opacity: 0.6; }
+        }
+
+        body { 
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+        .header {
+            background-color: #333;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .main-content {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            min-height: calc(100vh - 200px);
+        }
+        .footer {
+            background-color: #333;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            margin-top: 2rem;
+            box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
+        }
+        .nav-button {
+            display: inline-block;
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            margin: 0 10px;
+            border-radius: 4px;
+            background-color: #555;
+            cursor: pointer;
+            border: none;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .nav-button:hover {
+            background-color: #666;
+            transform: translateY(-1px);
+        }
+        .nav-button:active {
+            transform: translateY(1px);
+        }
+        .nav-button:focus {
+            outline: 2px solid #888;
+            outline-offset: 2px;
+        }
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            font-size: 1.2rem;
+            color: #666;
+            animation: pulse 1.5s infinite;
+        }
+        .loading::after {
+            content: "...";
+            animation: dots 1.5s steps(4, end) infinite;
+        }
+        .error-boundary {
+            padding: 20px;
+            text-align: center;
+            background-color: #fff3f3;
+            color: #cc0000;
+            border-radius: 4px;
+            margin: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .error-boundary button {
+            margin-top: 10px;
+            padding: 8px 16px;
+            background-color: #cc0000;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .error-boundary button:hover {
+            background-color: #aa0000;
+        }
+        /* Accessibility improvements */
+        @media (prefers-reduced-motion: reduce) {
+            .nav-button {
+                transition: none;
+            }
+            .loading {
+                animation: none;
+            }
+        }
+        /* High contrast mode support */
+        @media (forced-colors: active) {
+            .nav-button:focus {
+                outline: 2px solid ButtonText;
+            }
+        }
+        .nav-button.active {
+            background-color: #777;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div id="root">
+        Loading...
+    </div>
+
+    <script type="text/babel">
+        // Header Component
+        const Header = ({ onNavClick, currentPage }) => {
+            return (
+                <header className="header">
+                    <h1>Howell Forge - TEST VERSION</h1>
+                    <div>
+                        <button 
+                            className={`nav-button ${currentPage === 'home' ? 'active' : ''}`}
+                            onClick={() => onNavClick('home')}
+                        >
+                            Home
+                        </button>
+                        <button 
+                            className={`nav-button ${currentPage === 'about' ? 'active' : ''}`}
+                            onClick={() => onNavClick('about')}
+                        >
+                            About
+                        </button>
+                        <button 
+                            className={`nav-button ${currentPage === 'products' ? 'active' : ''}`}
+                            onClick={() => onNavClick('products')}
+                        >
+                            Products
+                        </button>
+                        <button 
+                            className={`nav-button ${currentPage === 'contact' ? 'active' : ''}`}
+                            onClick={() => onNavClick('contact')}
+                        >
+                            Contact
+                        </button>
+                    </div>
+                </header>
+            );
+        };
+
+        // Footer Component
+        const Footer = () => {
+            return (
+                <footer className="footer" role="contentinfo">
+                    <p>&copy; {new Date().getFullYear()} Howell Forge. All rights reserved.</p>
+                    <p>Email: <a href="mailto:chrishowell@howell-forge.com" style={{color: 'white'}}>chrishowell@howell-forge.com</a></p>
+                </footer>
+            );
+        };
+
+        // Content Components
+        const Home = () => (
+            <div className="main-content" role="main">
+                <h2>Welcome to Howell Forge</h2>
+                <p>Your trusted partner in metal parts production and custom solutions.</p>
+                <p>This is our test version - React is working if you can see this!</p>
+            </div>
+        );
+
+        const About = () => (
+            <div className="main-content">
+                <h2>About Us</h2>
+                <div style={{
+                    maxWidth: '800px',
+                    margin: '0 auto',
+                    padding: '20px',
+                }}>
+                    <h3 style={{color: '#333', marginBottom: '1rem'}}>A Family Legacy in Metal Parts Production</h3>
+                    <p style={{fontSize: '1.1em', lineHeight: '1.6', marginBottom: '1.5rem'}}>
+                        Welcome to Howell Forge, a father-son team proudly based in Western North Carolina. Our deep roots in this 
+                        beautiful region inspire our work ethic and commitment to quality in everything we create.
+                    </p>
+                    <p style={{fontSize: '1.1em', lineHeight: '1.6', marginBottom: '1.5rem'}}>
+                        We combine years of experience with innovative techniques to deliver exceptional metal parts production 
+                        services. Our family partnership brings together traditional craftsmanship and modern precision, 
+                        ensuring each project meets the highest standards of quality and durability.
+                    </p>
+                    <p style={{fontSize: '1.1em', lineHeight: '1.6'}}>
+                        Based in the heart of Western North Carolina, we're proud to serve our local community while 
+                        reaching clients across the region. Our family values of integrity, quality, and personal service 
+                        are reflected in every project we undertake.
+                    </p>
+                </div>
+            </div>
+        );
+
+        const Contact = () => (
+            <div className="main-content" role="main">
+                <h2>Contact Us</h2>
+                <div style={{
+                    maxWidth: '600px',
+                    margin: '0 auto',
+                    padding: '20px',
+                    backgroundColor: '#f5f5f5',
+                    borderRadius: '8px',
+                }}>
+                    <h3 style={{color: '#333', marginTop: '0'}}>Get In Touch</h3>
+                    <p style={{fontSize: '1.1em', marginBottom: '20px'}}>
+                        We're here to help with your metal parts production needs. Reach out to discuss your project!
+                    </p>
+                    
+                    <div style={{marginBottom: '20px'}}>
+                        <h4 style={{color: '#444', marginBottom: '10px'}}>Email</h4>
+                        <a href="mailto:chrishowell@howell-forge.com" 
+                           style={{
+                               color: '#0066cc',
+                               textDecoration: 'none',
+                               fontSize: '1.1em'
+                           }}>
+                            chrishowell@howell-forge.com
+                        </a>
+                    </div>
+
+                    <div style={{marginBottom: '20px'}}>
+                        <h4 style={{color: '#444', marginBottom: '10px'}}>Business Hours</h4>
+                        <p style={{margin: '5px 0'}}>Monday - Friday: 9:00 AM - 5:00 PM EST</p>
+                        <p style={{margin: '5px 0'}}>Weekend: By Appointment</p>
+                    </div>
+
+                    <div style={{
+                        backgroundColor: '#fff',
+                        padding: '15px',
+                        borderRadius: '4px',
+                        marginTop: '20px'
+                    }}>
+                        <p style={{
+                            margin: '0',
+                            color: '#666',
+                            fontSize: '0.9em'
+                        }}>
+                            For fastest response, please include in your email:
+                            <ul style={{marginTop: '10px'}}>
+                                <li>Project type/description</li>
+                                <li>Desired timeline</li>
+                                <li>Best contact method</li>
+                            </ul>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        );
+
+        const Products = () => (
+            <div className="main-content">
+                <h2>Products</h2>
+                <div style={{
+                    maxWidth: '800px',
+                    margin: '0 auto',
+                    padding: '20px',
+                    textAlign: 'center',
+                }}>
+                    <div style={{
+                        backgroundColor: '#f5f5f5',
+                        padding: '2rem',
+                        borderRadius: '8px',
+                        marginTop: '2rem',
+                    }}>
+                        <h3 style={{
+                            color: '#333',
+                            marginBottom: '1rem',
+                            fontSize: '1.8em'
+                        }}>
+                            Coming Soon
+                        </h3>
+                        <p style={{
+                            fontSize: '1.2em',
+                            color: '#666',
+                            maxWidth: '600px',
+                            margin: '0 auto',
+                            lineHeight: '1.6'
+                        }}>
+                            We're currently preparing our product catalog. Check back soon to explore our range of 
+                            high-quality metal parts and custom solutions.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        );
+
+        // App Component
+        const App = () => {
+            const [currentPage, setCurrentPage] = React.useState('home');
+            const [isLoading, setIsLoading] = React.useState(false);
+            const [isError, setIsError] = React.useState(false);
+
+            const getContent = () => {
+                if (isError) {
+                    return (
+                        <div className="error-boundary" role="alert">
+                            <h2>Unable to load the website</h2>
+                            <p>Please refresh the page or try again later.</p>
+                        </div>
+                    );
+                }
+
+                if (isLoading) {
+                    return (
+                        <div className="loading" role="status" aria-live="polite">
+                            Loading content...
+                        </div>
+                    );
+                }
+                
+                switch(currentPage) {
+                    case 'about': return <About />;
+                    case 'contact': return <Contact />;
+                    case 'products': return <Products />;
+                    default: return <Home />;
+                }
+            };
+
+            return (
+                <div>
+                    <Header onNavClick={setCurrentPage} currentPage={currentPage} />
+                    {getContent()}
+                    <Footer />
+                </div>
+            );
+        };
+
+        // Simple render
+        ReactDOM.render(
+            <App />,
+            document.getElementById('root')
+        );
+    </script>
+</body>
+</html> 
