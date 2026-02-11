@@ -3,7 +3,7 @@ Version=1.0
 Type=Application
 Name=Howell Forge Restore
 Comment=Restore the working version of the Howell Forge website
-Exec=sh -c 'PROJECT_ROOT="$(dirname "%k")"; "$PROJECT_ROOT/backups/working_version/restore.sh"'
+Exec=sh -c 'TARGET="$HOME/Desktop/howell-forge.com/backups/working_version/restore.sh"; if [ -x "$TARGET" ]; then "$TARGET"; else PROJECT_ROOT="$(dirname "%k")"; "$PROJECT_ROOT/backups/working_version/restore.sh"; fi'
 Icon=system-run
 Terminal=true
 Categories=Utility;
