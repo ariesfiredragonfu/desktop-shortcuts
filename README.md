@@ -60,6 +60,24 @@ To restore from a specific backup:
 ./scripts/restore-shortcuts.sh [backup-file]
 ```
 
+### Restoring the Howell Forge website template
+
+This repository also includes a website restore script used by
+`howell-forge-restore.desktop`.
+
+Restore into the project root (creates/updates `index.html`):
+```bash
+./scripts/restore-website.sh
+```
+
+Restore into a custom directory:
+```bash
+./scripts/restore-website.sh /path/to/target/site
+```
+
+If an `index.html` already exists in the target directory, the script creates
+an `index.html.backup.<timestamp>` file before restoring.
+
 ## Backup Locations
 
 The tool will backup shortcuts from:
