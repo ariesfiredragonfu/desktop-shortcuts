@@ -41,17 +41,17 @@ class ShortcutRestore:
 
             for location, details in backup_info['locations'].items():
                 location_path = Path(location)
-                backup_path = Path(details['backup_path'])
+                source_path = Path(details['backup_path'])
 
-                if not backup_path.exists():
-                    self.logger.warning(f"Backup path {backup_path} does not exist, skipping")
+                if not source_path.exists():
+                    self.logger.warning(f"Backup path {source_path} does not exist, skipping")
                     continue
 
                 # Create destination directory if it doesn't exist
                 location_path.mkdir(parents=True, exist_ok=True)
 
                 # Restore files
-                for file in backup_path.glob('*.desktop'):
+                for file in source_path.glob('*.desktop'):
                     try:
                         dest_file = location_path / file.name
                         shutil.copy2(file, dest_file)
@@ -89,4 +89,4 @@ def main():
         sys.exit(1)
 
 if __name__ == '__main__':
-    main() 
+    main()    
